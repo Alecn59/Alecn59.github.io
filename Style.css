@@ -1,18 +1,26 @@
-*{
-  padding: 0;
-  margin: 0;
+html, body {
+    margin: 0; padding: 0; border: 0; 
 }
-
-body{
-  height: 100vh;
-  background: linear-gradient(
-    to top,
-    pink 0%,
-    pink 50%,
-    paleturquoise 50%,
-    paleturquoise 100%
-  );
-   display: flex;
-  justify-content: center;
-  align-items: center;
+body {
+    background: #ccc
+}
+#left, #right {
+    position: fixed;
+    width: 50%;
+    height: 100%;
+    top: 0
+}
+#left {
+    background: #ccc;
+    left: 0
+}
+#right {
+    background: #999;
+    right: 0
+}
+#container {
+    background: #fff;
+    width: 80%;
+    margin: 0 auto;
+    position: relative
 }

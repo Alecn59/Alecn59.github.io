@@ -27,7 +27,18 @@ body {font-family: "Open Sans"}
 div.a {
   text-indent: 50px;
 }
-
+body {
+  background-color: purple;
+}
+#bg-right {
+  background-color: yellow;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: 0;
+  z-index: -1;
+}
 	
 .column {
   float: left;
@@ -43,7 +54,9 @@ div.a {
   clear: both;
 }
 	
-	
+<body>
+<div id="bg-right"></div>
+
 </style>
 </head>
 <body class="w3-light-grey">
@@ -275,5 +288,6 @@ function likeFunction(x) {
 }
 </script>
 
+</body>
 </body>
 </html>

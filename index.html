@@ -1,8 +1,7 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Largest Time</title>
+  <title>Largest Time and Name</title>
   <style>
     table {
       border-collapse: collapse;
@@ -16,32 +15,48 @@
   </style>
 </head>
 <body>
-  <h1>Largest Time</h1>
+  <h1>Largest Time and Name</h1>
   
   <form>
     <label for="time-input">Enter a time:</label>
-    <input type="time" id="time-input">
+    <input type="text" id="time-input">
+    <br>
+    <label for="name-input">Enter a name:</label>
+    <input type="text" id="name-input">
+    <br>
     <button type="button" onclick="reportLargestTime()">Submit</button>
   </form>
   
   <table id="time-table">
-    <caption>Largest Time Entered</caption>
+    <caption>Largest Time and Name Entered</caption>
     <tr>
       <th>Time</th>
+      <th>Name</th>
     </tr>
   </table>
   
   <script>
     function reportLargestTime() {
       var timeInput = document.getElementById("time-input");
+      var nameInput = document.getElementById("name-input");
       var timeTable = document.getElementById("time-table");
       
       var time = timeInput.value;
+      var name = nameInput.value;
       var largestTime = timeTable.rows[1] ? timeTable.rows[1].cells[0].innerText : "";
       
-      if (time > largestTime) {
-        timeTable.innerHTML = "<tr><th>Time</th></tr><tr><td>" + time + "</td></tr>";
+      if (timeToSeconds(time) > timeToSeconds(largestTime)) {
+        timeTable.innerHTML = "<tr><th>Time</th><th>Name</th></tr><tr><td>" + time + "</td><td>" + name + "</td></tr>";
       }
+    }
+    
+    function timeToSeconds(timeString) {
+      var timeParts = timeString.split(":");
+      var hours = parseInt(timeParts[0], 10);
+      var minutes = parseInt(timeParts[1], 10);
+      var seconds = parseInt(timeParts[2], 10);
+      
+      return hours * 3600 + minutes * 60 + seconds;
     }
   </script>
 </body>

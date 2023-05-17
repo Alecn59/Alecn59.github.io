@@ -47,46 +47,51 @@
       var time = timeInput.value;
       var name = nameInput.value;
       
-      // Create a new row for the time and name
-      var newRow = document.createElement("tr");
-      var numberCell = document.createElement("td");
-      var timeCell = document.createElement("td");
-      var nameCell = document.createElement("td");
-      entryCount++;
-      
-      numberCell.textContent = entryCount;
-      timeCell.textContent = time;
-      nameCell.textContent = name;
-      newRow.appendChild(numberCell);
-      newRow.appendChild(timeCell);
-      newRow.appendChild(nameCell);
-      
-      var rows = timeTable.rows.length;
-      var insertIndex = rows; // Index to insert the new row (default is at the end)
-      
-      // Find the index to insert the new row based on ascending order of time
-      for (var i = 1; i < rows; i++) {
-        var currTime = timeTable.rows[i].cells[1].innerText;
-        if (time > currTime) {
-          insertIndex = i;
-          break;
-        }
-      }
-      
-      // Insert the new row at the determined index
-      if (insertIndex <= 10) {
-        if (rows > 10) {
-          timeTable.deleteRow(10);
-        }
-        timeTable.insertBefore(newRow, timeTable.rows[insertIndex]);
+      // Check if both time and name are entered
+      if (time && name) {
+        // Create a new row for the time and name
+        var newRow = document.createElement("tr");
+        var numberCell = document.createElement("td");
+        var timeCell = document.createElement("td");
+        var nameCell = document.createElement("td");
+        entryCount++;
         
-        // Update the numbering of rows
-        updateRowNumbers();
+        numberCell.textContent = entryCount;
+        timeCell.textContent = time;
+        nameCell.textContent = name;
+        newRow.appendChild(numberCell);
+        newRow.appendChild(timeCell);
+        newRow.appendChild(nameCell);
+        
+        var rows = timeTable.rows.length;
+        var insertIndex = rows; // Index to insert the new row (default is at the end)
+        
+        // Find the index to insert the new row based on ascending order of time
+        for (var i = 1; i < rows; i++) {
+          var currTime = timeTable.rows[i].cells[1].innerText;
+          if (time > currTime) {
+            insertIndex = i;
+            break;
+          }
+        }
+        
+        // Insert the new row at the determined index
+        if (insertIndex <= 10) {
+          if (rows > 10) {
+            timeTable.deleteRow(10);
+          }
+          timeTable.insertBefore(newRow, timeTable.rows[insertIndex]);
+          
+          // Update the numbering of rows
+          updateRowNumbers();
+        }
+        
+        // Reset the input fields
+        timeInput.value = "";
+        nameInput.value = "";
+      } else {
+        alert("Please enter both time and name before submitting.");
       }
-      
-      // Reset the input fields
-      timeInput.value = "";
-      nameInput.value = "";
     }
     
     function updateRowNumbers() {

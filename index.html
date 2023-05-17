@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Largest Time and Name</title>
+  <title>Top Ten Times and Names Entered</title>
   <style>
     table {
       border-collapse: collapse;
@@ -15,91 +15,64 @@
   </style>
 </head>
 <body>
-  <h1>Largest Time and Name</h1>
+  <h1>Top Ten Times and Names Entered</h1>
   
   <form>
     <label for="time-input">Enter a time:</label>
-    <input type="time" id="time-input" step="1" min="00:00" max="23:59">
+    <input type="text" id="time-input" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}">
     <br>
     <label for="name-input">Enter a name:</label>
     <input type="text" id="name-input">
     <br>
-    <button type="button" onclick="reportLargestTime()">Submit</button>
+    <label for="email-input">Enter an email:</label>
+    <input type="email" id="email-input">
+    <br>
+    <button type="button" onclick="reportTopTen()">Submit</button>
   </form>
   
-  <table id="time-table">
+  <table id="top-ten-table">
     <caption>Top Ten Times and Names Entered</caption>
     <tr>
-      <th>#</th>
+      <th>Rank</th>
       <th>Time</th>
       <th>Name</th>
+      <th>Email</th>
     </tr>
   </table>
   
   <script>
-    var entryCount = 0; // Track the number of entries
+    var topTenTimes = [];
     
-    function reportLargestTime() {
+    function reportTopTen() {
       var timeInput = document.getElementById("time-input");
       var nameInput = document.getElementById("name-input");
-      var timeTable = document.getElementById("time-table");
+      var emailInput = document.getElementById("email-input");
+      var topTenTable = document.getElementById("top-ten-table");
       
       var time = timeInput.value;
       var name = nameInput.value;
+      var email = emailInput.value;
       
-      // Check if both time and name are entered
-      if (time && name) {
-        // Create a new row for the time and name
-        var newRow = document.createElement("tr");
-        var numberCell = document.createElement("td");
-        var timeCell = document.createElement("td");
-        var nameCell = document.createElement("td");
-        entryCount++;
+      if (time && name && email) {
+        var timeObj = { time: time, name: name, email: email };
+        topTenTimes.push(timeObj);
+        topTenTimes.sort(function(a, b) {
+          return a.time.localeCompare(b.time);
+        });
         
-        numberCell.textContent = entryCount;
-        timeCell.textContent = time;
-        nameCell.textContent = name;
-        newRow.appendChild(numberCell);
-        newRow.appendChild(timeCell);
-        newRow.appendChild(nameCell);
-        
-        var rows = timeTable.rows.length;
-        var insertIndex = rows; // Index to insert the new row (default is at the end)
-        
-        // Find the index to insert the new row based on ascending order of time
-        for (var i = 1; i < rows; i++) {
-          var currTime = timeTable.rows[i].cells[1].innerText;
-          if (time > currTime) {
-            insertIndex = i;
-            break;
-          }
+        if (topTenTimes.length > 10) {
+          topTenTimes.splice(10, 1);
         }
         
-        // Insert the new row at the determined index
-        if (insertIndex <= 10) {
-          if (rows > 10) {
-            timeTable.deleteRow(10);
-          }
-          timeTable.insertBefore(newRow, timeTable.rows[insertIndex]);
-          
-          // Update the numbering of rows
-          updateRowNumbers();
+        var tableContent = "<tr><th>Rank</th><th>Time</th><th>Name</th><th>Email</th></tr>";
+        for (var i = 0; i < topTenTimes.length; i++) {
+          tableContent += "<tr><td>" + (i + 1) + "</td><td>" + topTenTimes[i].time + "</td><td>" + topTenTimes[i].name + "</td><td>" + topTenTimes[i].email + "</td></tr>";
         }
         
-        // Reset the input fields
+        topTenTable.innerHTML = tableContent;
         timeInput.value = "";
         nameInput.value = "";
-      } else {
-        alert("Please enter both time and name before submitting.");
-      }
-    }
-    
-    function updateRowNumbers() {
-      var timeTable = document.getElementById("time-table");
-      var rows = timeTable.rows.length;
-      
-      for (var i = 1; i < rows; i++) {
-        timeTable.rows[i].cells[0].textContent = i;
+        emailInput.value = "";
       }
     }
   </script>

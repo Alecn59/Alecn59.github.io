@@ -12,14 +12,6 @@
       padding: 8px;
       text-align: center;
     }
-    
-    .reset-button {
-      background-color: red;
-      color: white;
-      padding: 5px 10px;
-      border: none;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
@@ -47,8 +39,6 @@
       <th>Email</th>
     </tr>
   </table>
-  
-  <button class="reset-button" onclick="resetLocalStorage()">Reset</button>
   
   <script>
     var topTenTimes = [];
@@ -96,3 +86,11 @@
       }
       
       topTenTable.innerHTML = tableContent;
+    }
+    
+    function saveToLocalStorage() {
+      localStorage.setItem("topTenTimes", JSON.stringify(topTenTimes));
+    }
+  </script>
+</body>
+</html>

@@ -43,12 +43,16 @@
   <script>
     var topTenTimes = [];
     
+    // Load previously saved data from local storage
+    if (localStorage.getItem("topTenTimes")) {
+      topTenTimes = JSON.parse(localStorage.getItem("topTenTimes"));
+      updateTable();
+    }
+    
     function reportTopTen() {
       var timeInput = document.getElementById("time-input");
       var nameInput = document.getElementById("name-input");
       var emailInput = document.getElementById("email-input");
-      var topTenTable = document.getElementById("top-ten-table");
-      
       var time = timeInput.value;
       var name = nameInput.value;
       var email = emailInput.value;
@@ -64,16 +68,28 @@
           topTenTimes.splice(10, 1);
         }
         
-        var tableContent = "<tr><th>Rank</th><th>Time</th><th>Name</th><th>Email</th></tr>";
-        for (var i = 0; i < topTenTimes.length; i++) {
-          tableContent += "<tr><td>" + (i + 1) + "</td><td>" + topTenTimes[i].time + "</td><td>" + topTenTimes[i].name + "</td><td>" + topTenTimes[i].email + "</td></tr>";
-        }
+        updateTable();
+        saveToLocalStorage();
         
-        topTenTable.innerHTML = tableContent;
         timeInput.value = "";
         nameInput.value = "";
         emailInput.value = "";
       }
+    }
+    
+    function updateTable() {
+      var topTenTable = document.getElementById("top-ten-table");
+      var tableContent = "<tr><th>Rank</th><th>Time</th><th>Name</th><th>Email</th></tr>";
+      
+      for (var i = 0; i < topTenTimes.length; i++) {
+        tableContent += "<tr><td>" + (i + 1) + "</td><td>" + topTenTimes[i].time + "</td><td>" + topTenTimes[i].name + "</td><td>" + topTenTimes[i].email + "</td></tr>";
+      }
+      
+      topTenTable.innerHTML = tableContent;
+    }
+    
+    function saveToLocalStorage() {
+      localStorage.setItem("topTenTimes", JSON.stringify(topTenTimes));
     }
   </script>
 </body>

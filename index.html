@@ -12,22 +12,35 @@
       padding: 8px;
       text-align: center;
     }
+    
+    .reset-button {
+      background-color: red;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .error-message {
+      color: red;
+    }
   </style>
 </head>
 <body>
   <h1>Top Ten Times and Names Entered</h1>
   
-  <form>
+  <form id="entry-form">
     <label for="time-input">Enter a time:</label>
-    <input type="text" id="time-input" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}">
+    <input type="text" id="time-input" pattern="^([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]\.[0-9]{3}$" required>
     <br>
     <label for="name-input">Enter a name:</label>
-    <input type="text" id="name-input">
+    <input type="text" id="name-input" required>
     <br>
     <label for="email-input">Enter an email:</label>
-    <input type="email" id="email-input">
+    <input type="email" id="email-input" required>
     <br>
     <button type="button" onclick="reportTopTen()">Submit</button>
+    <p id="error-message" class="error-message"></p>
   </form>
   
   <table id="top-ten-table">
@@ -39,6 +52,8 @@
       <th>Email</th>
     </tr>
   </table>
+  
+  <button class="reset-button" onclick="resetLocalStorage()">Reset</button>
   
   <script>
     var topTenTimes = [];
@@ -53,44 +68,39 @@
       var timeInput = document.getElementById("time-input");
       var nameInput = document.getElementById("name-input");
       var emailInput = document.getElementById("email-input");
+      var errorMessage = document.getElementById("error-message");
+      
       var time = timeInput.value;
       var name = nameInput.value;
       var email = emailInput.value;
       
-      if (time && name && email) {
-        var timeObj = { time: time, name: name, email: email };
-        topTenTimes.push(timeObj);
-        topTenTimes.sort(function(a, b) {
-          return a.time.localeCompare(b.time);
-        });
-        
-        if (topTenTimes.length > 10) {
-          topTenTimes.splice(10, 1);
-        }
-        
-        updateTable();
-        saveToLocalStorage();
-        
-        timeInput.value = "";
-        nameInput.value = "";
-        emailInput.value = "";
+      if (!timeInput.checkValidity() || !nameInput.checkValidity() || !emailInput.checkValidity()) {
+        errorMessage.textContent = "Please fill in all fields with valid input.";
+        return;
       }
+      
+      errorMessage.textContent = "";
+      
+      var timeObj = { time: time, name: name, email: email };
+      topTenTimes.push(timeObj);
+      topTenTimes.sort(function(a, b) {
+        return a.time.localeCompare(b.time);
+      });
+      
+      if (topTenTimes.length > 10) {
+        topTenTimes.splice(10, 1);
+      }
+      
+      updateTable();
+      saveToLocalStorage();
+      
+      timeInput.value = "";
+      nameInput.value = "";
+      emailInput.value = "";
     }
     
     function updateTable() {
       var topTenTable = document.getElementById("top-ten-table");
       var tableContent = "<tr><th>Rank</th><th>Time</th><th>Name</th><th>Email</th></tr>";
       
-      for (var i = 0; i < topTenTimes.length; i++) {
-        tableContent += "<tr><td>" + (i + 1) + "</td><td>" + topTenTimes[i].time + "</td><td>" + topTenTimes[i].name + "</td><td>" + topTenTimes[i].email + "</td></tr>";
-      }
-      
-      topTenTable.innerHTML = tableContent;
     }
-    
-    function saveToLocalStorage() {
-      localStorage.setItem("topTenTimes", JSON.stringify(topTenTimes));
-    }
-  </script>
-</body>
-</html>

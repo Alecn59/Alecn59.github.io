@@ -12,36 +12,6 @@
       padding: 8px;
       text-align: center;
     }
-    .reset-button {
-      background-color: red;
-      color: white;
-      padding: 8px 16px;
-      border: none;
-      cursor: pointer;
-      margin-top: 16px;
-    }
-    .reset-button:hover {
-      background-color: darkred;
-    }
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-      display: none;
-    }
-    .overlay-content {
-      background-color: white;
-      padding: 16px;
-      border-radius: 4px;
-      text-align: center;
-    }
   </style>
 </head>
 <body>
@@ -70,16 +40,7 @@
     </tr>
   </table>
   
-  <button type="button" onclick="showConfirmation()">Reset</button>
-  
-  <div class="overlay" id="confirmation-overlay">
-    <div class="overlay-content">
-      <h2>Reset Confirmation</h2>
-      <p>Are you sure you want to reset the data?</p>
-      <button type="button" onclick="resetData()">Reset</button>
-      <button type="button" onclick="hideConfirmation()">Cancel</button>
-    </div>
-  </div>
+  <button type="button" onclick="resetData()">Reset</button>
   
   <script>
     var topTenTimes = [];
@@ -101,7 +62,6 @@
       if (time && name && email) {
         var timeObj = { time: time, name: name, email: email };
         topTenTimes.push(timeObj);
-
         topTenTimes.sort(function(a, b) {
           return a.time.localeCompare(b.time);
         });
@@ -142,4 +102,3 @@
       </script>
 </body>
 </html>
-

@@ -16,7 +16,7 @@
 </head>
 <body>
   <h1>Top Ten Times and Names Entered</h1>
-  
+
   <form>
     <label for="time-input">Enter a time:</label>
     <input type="text" id="time-input" pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}">
@@ -29,7 +29,7 @@
     <br>
     <button type="button" onclick="reportTopTen()">Submit</button>
   </form>
-  
+
   <table id="top-ten-table">
     <caption>Top Ten Times and Names Entered</caption>
     <tr>
@@ -39,18 +39,26 @@
       <th>Email</th>
     </tr>
   </table>
-  
-  <button type="button" onclick="resetData()">Reset</button>
-  
+
+  <button type="button" onclick="showResetConfirmation()">Reset</button>
+
+  <div id="reset-confirmation" style="display: none;">
+    <label for="password-input">Enter the password to reset:</label>
+    <input type="password" id="password-input">
+    <br>
+    <button type="button" onclick="confirmReset()">Confirm Reset</button>
+    <button type="button" onclick="cancelReset()">Cancel</button>
+  </div>
+
   <script>
     var topTenTimes = [];
-    
+
     // Load previously saved data from local storage
     if (localStorage.getItem("topTenTimes")) {
       topTenTimes = JSON.parse(localStorage.getItem("topTenTimes"));
       updateTable();
     }
-    
+
     function reportTopTen() {
       var timeInput = document.getElementById("time-input");
       var nameInput = document.getElementById("name-input");
@@ -58,47 +66,68 @@
       var time = timeInput.value;
       var name = nameInput.value;
       var email = emailInput.value;
-      
+
       if (time && name && email) {
         var timeObj = { time: time, name: name, email: email };
         topTenTimes.push(timeObj);
         topTenTimes.sort(function(a, b) {
           return a.time.localeCompare(b.time);
         });
-        
+
         if (topTenTimes.length > 10) {
           topTenTimes.splice(10, 1);
         }
-        
+
         updateTable();
         saveToLocalStorage();
-        
+
         timeInput.value = "";
         nameInput.value = "";
         emailInput.value = "";
       }
     }
-    
+
     function updateTable() {
       var topTenTable = document.getElementById("top-ten-table");
       var tableContent = "<tr><th>Rank</th><th>Time</th><th>Name</th><th>Email</th></tr>";
-      
+
       for (var i = 0; i < topTenTimes.length; i++) {
         tableContent += "<tr><td>" + (i + 1) + "</td><td>" + topTenTimes[i].time + "</td><td>" + topTenTimes[i].name + "</td><td>" + topTenTimes[i].email + "</td></tr>";
       }
-      
+
       topTenTable.innerHTML = tableContent;
     }
-    
+
     function saveToLocalStorage() {
       localStorage.setItem("topTenTimes", JSON.stringify(topTenTimes));
     }
-    
+
     function resetData() {
       topTenTimes = [];
       updateTable();
     }
-    
-      </script>
+
+    function showResetConfirmation() {
+      document.getElementById("reset-confirmation").style.display = "block";
+    }
+
+    function cancelReset() {
+      document.getElementById("reset-confirmation").style.display = "none";
+      document.getElementById("password-input").value = "";
+    }
+
+    function confirmReset() {
+      var passwordInput = document.getElementById("password-input").value;
+      if (passwordInput === "Kioxia123") {
+        resetData();
+        localStorage.removeItem("topTenTimes");
+        document.getElementById("reset-confirmation").style.display = "none";
+        document.getElementById("password-input").value = "";
+      } else {
+        alert("Incorrect password. Reset operation canceled.");
+        cancelReset();
+      }
+    }
+  </script>
 </body>
 </html>

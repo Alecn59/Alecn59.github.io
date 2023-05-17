@@ -40,6 +40,8 @@
     </tr>
   </table>
   
+  <button type="button" onclick="resetData()">Reset</button>
+  
   <script>
     var topTenTimes = [];
     
@@ -91,5 +93,8 @@
     function saveToLocalStorage() {
       localStorage.setItem("topTenTimes", JSON.stringify(topTenTimes));
     }
-  </script>
-</body>
+    
+    function resetData() {
+      topTenTimes = [];
+      updateTable();
+    }

@@ -19,7 +19,7 @@
   
   <form>
     <label for="time-input">Enter a time:</label>
-    <input type="text" id="time-input">
+    <input type="time" id="time-input">
     <br>
     <label for="name-input">Enter a name:</label>
     <input type="text" id="name-input">
@@ -45,18 +45,9 @@
       var name = nameInput.value;
       var largestTime = timeTable.rows[1] ? timeTable.rows[1].cells[0].innerText : "";
       
-      if (timeToSeconds(time) > timeToSeconds(largestTime)) {
+      if (time > largestTime) {
         timeTable.innerHTML = "<tr><th>Time</th><th>Name</th></tr><tr><td>" + time + "</td><td>" + name + "</td></tr>";
       }
-    }
-    
-    function timeToSeconds(timeString) {
-      var timeParts = timeString.split(":");
-      var hours = parseInt(timeParts[0], 10);
-      var minutes = parseInt(timeParts[1], 10);
-      var seconds = parseInt(timeParts[2], 10);
-      
-      return hours * 3600 + minutes * 60 + seconds;
     }
   </script>
 </body>

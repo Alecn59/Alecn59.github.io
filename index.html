@@ -181,6 +181,7 @@
     // Load previously saved data from local storage
     if (localStorage.getItem("topTenTimes")) {
       topTenTimes = JSON.parse(localStorage.getItem("topTenTimes"));
+      saveToLocalStorage();
       updateTable();
     }
 

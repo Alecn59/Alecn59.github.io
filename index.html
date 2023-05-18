@@ -229,26 +229,10 @@
 
       topTenTable.innerHTML = tableContent;
     }
-  function saveToLocalStorage() {
-    localStorage.setItem("topTenTimes", JSON.stringify(topTenTimes));
 
-    // Save data to User_data.json
-    var data = JSON.stringify(topTenTimes);
-    var filename = "User_data.json";
-    var blob = new Blob([data], { type: "application/json" });
-
-    // Create a temporary link element
-    var link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-
-    // Append the link to the DOM and simulate a click
-    document.body.appendChild(link);
-    link.click();
-
-    // Clean up the temporary link element
-    document.body.removeChild(link);
-  }
+    function saveToLocalStorage() {
+      localStorage.setItem("topTenTimes", JSON.stringify(topTenTimes));
+    }
 
     function showConfirmationDialog() {
       var dialog = document.getElementById("confirmation-dialog");

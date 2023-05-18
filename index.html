@@ -9,22 +9,18 @@
       margin: 0;
       padding: 20px;
     }
-
     h1 {
       text-align: center;
       color: #333;
     }
-
     form {
       margin-bottom: 20px;
     }
-
     label {
       display: block;
       margin-bottom: 5px;
       color: #333;
     }
-
     input[type="text"],
     input[type="email"],
     input[type="password"] {
@@ -34,14 +30,12 @@
       border-radius: 4px;
       box-sizing: border-box;
     }
-
     input[type="text"]:focus,
     input[type="email"]:focus,
     input[type="password"]:focus {
       outline: none;
       border-color: #5b9dd9;
     }
-
     button {
       padding: 8px 16px;
       border: none;
@@ -50,28 +44,23 @@
       color: #fff;
       cursor: pointer;
     }
-
     button:hover {
       background-color: #3282b8;
     }
-
     table {
       border-collapse: collapse;
       width: 100%;
       margin-bottom: 20px;
     }
-
     th, td {
       border: 1px solid #ccc;
       padding: 8px;
       text-align: center;
     }
-
     caption {
       font-weight: bold;
       margin-bottom: 10px;
     }
-
     .reset-btn {
       padding: 8px 16px;
       border: none;
@@ -80,11 +69,9 @@
       color: #fff;
       cursor: pointer;
     }
-
     .reset-btn:hover {
       background-color: #c0392b;
     }
-
     .confirmation-dialog {
       display: none;
       position: fixed;
@@ -99,12 +86,10 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
-
     .confirmation-dialog h2 {
       margin-top: 0;
       color: #333;
     }
-
     .confirmation-dialog input[type="password"] {
       width: 100%;
       margin-bottom: 10px;
@@ -112,7 +97,7 @@
   </style>
 </head>
 <body>
-  <h1><u>Best Time: </u></h1>
+  <h1><u>Best Time: <span id="best-time"></span></u></h1>
 
   <table id="top-ten-table">
     <caption>Top Ten Times and Names Entered</caption>
@@ -129,14 +114,13 @@
   <div id="confirmation-dialog" class="confirmation-dialog">
     <h2>Reset Data</h2>
     <p>Enter the password to confirm:</p>
-    <input type="password"
     <input type="password" id="reset-password-input">
     <br>
     <button type="button" onclick="resetData()">Confirm</button>
     <button type="button" onclick="hideConfirmationDialog()">Cancel</button>
   </div>
 
-  <br>  <br>
+  <br> <br>
 
   <form>
     <label for="time-input">Enter a time:</label>
@@ -156,7 +140,6 @@
 
     // Load previously saved data from local storage
     if (localStorage.getItem("topTenTimes")) {
-      
       topTenTimes = JSON.parse(localStorage.getItem("topTenTimes"));
       updateTable();
     }
@@ -191,11 +174,16 @@
 
     function updateTable() {
       var topTenTable = document.getElementById("top-ten-table");
+      var bestTimeElement = document.getElementById("best-time");
       var tableContent = "";
 
       // Display the top time above the title
       if (topTenTimes.length > 0) {
-        tableContent += "<tr><td colspan='4'><b>" + "Top 10 Times" + "</b></td></tr>";
+        var bestTime = topTenTimes[0].time;
+        bestTimeElement.textContent = bestTime;
+        tableContent += "<tr><td colspan='4'><b>Top 10 Times</b></td></tr>";
+      } else {
+        bestTimeElement.textContent = "";
       }
 
       // Display the table headers
@@ -216,6 +204,9 @@
     function showConfirmationDialog() {
       var dialog = document.getElementById("confirmation-dialog");
       dialog.style.display = "block";
+
+
+
     }
 
     function hideConfirmationDialog() {
@@ -225,8 +216,6 @@
 
     function resetData() {
       var passwordInput = document.getElementById("reset-password-input");
-      var password = passwordInput
-
       var password = passwordInput.value;
 
       // Check if the password matches

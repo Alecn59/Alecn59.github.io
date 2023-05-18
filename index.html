@@ -196,10 +196,11 @@ var Alltime = [];
       if (time && name && email) {
         var timeObj = { time: time, name: name, email: email };
         topTenTimes.push(timeObj);
+         Alltime += topTenTimes;
         topTenTimes.sort(function(a, b) {
           return a.time.localeCompare(b.time);
         });
-        Alltime += topTenTimes;
+       
         if (topTenTimes.length > 10) {
           topTenTimes.splice(10, 1);
         }

@@ -3,22 +3,17 @@
 <head>
   <title>Top Times</title>
   <style>
-       body {
+    body {
       font-family: Arial, sans-serif;
       background-color: #f2f2f2;
       margin: 0;
- 
       padding-left: 63px;
-         padding-right: 63px;
+      padding-right: 63px;
     }
     h1 {
       text-align: center;
       color: #333;
       padding: 0;
-    }
-    
-    h9 {
-       text-align: center;
     }
     form {
       margin-bottom: 5px;
@@ -138,7 +133,7 @@
   <div class="blue-bar blue-bar-left"></div>
   <div class="blue-bar blue-bar-right"></div>
   <h1><u>Best Time: <span id="best-time" class="bounce-animation"></span></u></h1>
-   <table id="top-ten-table">
+  <table id="top-ten-table">
     <caption>Top Ten Times and Names Entered</caption>
     <tr>
       <th>Rank</th>
@@ -148,7 +143,6 @@
     </tr>
   </table>
  
-
   <div id="confirmation-dialog" class="confirmation-dialog">
     <h2>Reset Data</h2>
     <p>Enter the password to confirm:</p>
@@ -171,17 +165,16 @@
     <input type="email" id="email-input">
     <br><br>
     <button type="button" onclick="reportTopTen()">Submit</button>
-     <button type="button" onclick="exportData()">Export Data</button>
-     <button type="button" class="reset-btn" onclick="showConfirmationDialog()">Reset</button>
+    <button type="button" onclick="exportData()">Export Data</button>
+    <button type="button" class="reset-btn" onclick="showConfirmationDialog()">Reset</button>
   </form>
 
   <script>
     var topTenTimes = [];
-var Alltime = [];
+
     // Load previously saved data from local storage
     if (localStorage.getItem("topTenTimes")) {
       topTenTimes = JSON.parse(localStorage.getItem("topTenTimes"));
-      saveToLocalStorage();
       updateTable();
     }
 
@@ -196,7 +189,6 @@ var Alltime = [];
       if (time && name && email) {
         var timeObj = { time: time, name: name, email: email };
         topTenTimes.push(timeObj);
-         Alltime += topTenTimes;
         topTenTimes.sort(function(a, b) {
           return a.time.localeCompare(b.time);
         });
@@ -241,15 +233,11 @@ var Alltime = [];
 
     function saveToLocalStorage() {
       localStorage.setItem("topTenTimes", JSON.stringify(topTenTimes));
-       localStorage.setItem("Alltime", JSON.stringify(Alltime));
     }
 
     function showConfirmationDialog() {
       var dialog = document.getElementById("confirmation-dialog");
       dialog.style.display = "block";
-
-
-
     }
 
     function hideConfirmationDialog() {
@@ -273,8 +261,8 @@ var Alltime = [];
       }
     }
     
-      function exportData() {
-      var data = JSON.stringify(Alltime);
+    function exportData() {
+      var data = JSON.stringify(topTenTimes);
       var filename = "User_data.json";
       var blob = new Blob([data], { type: "application/json" });
 

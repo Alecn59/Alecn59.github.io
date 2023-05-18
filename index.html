@@ -177,7 +177,7 @@
 
   <script>
     var topTenTimes = [];
-
+var Alltime = [];
     // Load previously saved data from local storage
     if (localStorage.getItem("topTenTimes")) {
       topTenTimes = JSON.parse(localStorage.getItem("topTenTimes"));
@@ -199,7 +199,7 @@
         topTenTimes.sort(function(a, b) {
           return a.time.localeCompare(b.time);
         });
-
+        Alltime += topTenTimes;
         if (topTenTimes.length > 10) {
           topTenTimes.splice(10, 1);
         }

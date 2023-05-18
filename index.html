@@ -112,8 +112,8 @@
   </style>
 </head>
 <body>
-  <h1><u>Top Ten Scores</u></h1>
-
+  
+  <h1><u> "Time to Beat: " + topTenTimes[0].time </u></h1>
   <table id="top-ten-table">
     <caption>Top Ten Times and Names Entered</caption>
     <tr>
@@ -194,7 +194,9 @@
 
       // Display the top time above the title
       if (topTenTimes.length > 0) {
-        tableContent += "<tr><td colspan='4'> <b>" + "Time to Beat" + topTenTimes[0].time + "</b></td></tr>";
+        
+       
+        tableContent += "<tr><td colspan='4'> <b>" + <u>Top Ten Scores</u> + "</b></td></tr>";
       }
 
       // Display the table headers

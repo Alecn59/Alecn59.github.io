@@ -111,47 +111,8 @@
     }
   </style>
 </head>
-<body>
   
-  <h1><u> "Time to Beat: " + topTenTimes[0].time </u></h1>
-  <table id="top-ten-table">
-    <caption>Top Ten Times and Names Entered</caption>
-    <tr>
-      <th>Rank</th>
-      <th>Time</th>
-      <th>Name</th>
-      <th>Email</th>
-    </tr>
-  </table>
-
-  <button type="button" class="reset-btn" onclick="showConfirmationDialog()">Reset</button>
-
-  <div id="confirmation-dialog" class="confirmation-dialog">
-    <h2>Reset Data</h2>
-    <p>Enter the password to confirm:</p>
-    <input type="password"
-    <input type="password" id="reset-password-input">
-    <br>
-    <button type="button" onclick="resetData()">Confirm</button>
-    <button type="button" onclick="hideConfirmationDialog()">Cancel</button>
-  </div>
-
-  <br>  <br>
-
-  <form>
-    <label for="time-input">Enter a time:</label>
-    <input type="text" id="time-input" pattern="^([0-9]+|:[0-9]{2}(:[0-9]{2})?)$">
-
-    <label for="name-input">Enter full name:</label>
-    <input type="text" id="name-input" pattern="[0-9]+">
-    <br>
-    <label for="email-input">Enter an email:</label>
-    <input type="email" id="email-input">
-    <br><br>
-    <button type="button" onclick="reportTopTen()">Submit</button>
-  </form>
-
-  <script>
+    <script>
     var topTenTimes = [];
 
     // Load previously saved data from local storage
@@ -242,5 +203,46 @@
       }
     }
   </script>
+<body>
+  
+  <h1><u> "Time to Beat: " + topTenTimes[0].time </u></h1>
+  <table id="top-ten-table">
+    <caption>Top Ten Times and Names Entered</caption>
+    <tr>
+      <th>Rank</th>
+      <th>Time</th>
+      <th>Name</th>
+      <th>Email</th>
+    </tr>
+  </table>
+
+  <button type="button" class="reset-btn" onclick="showConfirmationDialog()">Reset</button>
+
+  <div id="confirmation-dialog" class="confirmation-dialog">
+    <h2>Reset Data</h2>
+    <p>Enter the password to confirm:</p>
+    <input type="password"
+    <input type="password" id="reset-password-input">
+    <br>
+    <button type="button" onclick="resetData()">Confirm</button>
+    <button type="button" onclick="hideConfirmationDialog()">Cancel</button>
+  </div>
+
+  <br>  <br>
+
+  <form>
+    <label for="time-input">Enter a time:</label>
+    <input type="text" id="time-input" pattern="^([0-9]+|:[0-9]{2}(:[0-9]{2})?)$">
+
+    <label for="name-input">Enter full name:</label>
+    <input type="text" id="name-input" pattern="[0-9]+">
+    <br>
+    <label for="email-input">Enter an email:</label>
+    <input type="email" id="email-input">
+    <br><br>
+    <button type="button" onclick="reportTopTen()">Submit</button>
+  </form>
+
+
 </body>
 </html>

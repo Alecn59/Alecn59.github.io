@@ -113,9 +113,6 @@
 </head>
 <body>
   <h1><u>Top Ten Scores</u></h1>
-  
-
-
 
   <table id="top-ten-table">
     <caption>Top Ten Times and Names Entered</caption>
@@ -132,16 +129,19 @@
   <div id="confirmation-dialog" class="confirmation-dialog">
     <h2>Reset Data</h2>
     <p>Enter the password to confirm:</p>
+    <input type="password"
     <input type="password" id="reset-password-input">
     <br>
     <button type="button" onclick="resetData()">Confirm</button>
     <button type="button" onclick="hideConfirmationDialog()">Cancel</button>
   </div>
-    <br>  <br>
+
+  <br>  <br>
+
   <form>
     <label for="time-input">Enter a time:</label>
     <input type="text" id="time-input" pattern="^([0-9]+|:[0-9]{2}(:[0-9]{2})?)$">
-    
+
     <label for="name-input">Enter full name:</label>
     <input type="text" id="name-input" pattern="[0-9]+">
     <br>
@@ -150,6 +150,7 @@
     <br><br>
     <button type="button" onclick="reportTopTen()">Submit</button>
   </form>
+
   <script>
     var topTenTimes = [];
 
@@ -189,8 +190,17 @@
 
     function updateTable() {
       var topTenTable = document.getElementById("top-ten-table");
-      var tableContent = "<tr><th>Rank</th><th>Time</th><th>Name</th><th>Email</th></tr>";
+      var tableContent = "";
 
+      // Display the top time above the title
+      if (topTenTimes.length > 0) {
+        tableContent += "<tr><td colspan='4'>" + topTenTimes[0].time + "</td></tr>";
+      }
+
+      // Display the table headers
+      tableContent += "<tr><th>Rank</th><th>Time</th><th>Name</th><th>Email</th></tr>";
+
+      // Display the table rows
       for (var i = 0; i < topTenTimes.length; i++) {
         tableContent += "<tr><td>" + (i + 1) + "</td><td>" + topTenTimes[i].time + "</td><td>" + topTenTimes[i].name + "</td><td>" + topTenTimes[i].email + "</td></tr>";
       }
@@ -214,6 +224,8 @@
 
     function resetData() {
       var passwordInput = document.getElementById("reset-password-input");
+      var password = passwordInput
+
       var password = passwordInput.value;
 
       // Check if the password matches

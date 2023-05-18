@@ -156,6 +156,7 @@
 
     // Load previously saved data from local storage
     if (localStorage.getItem("topTenTimes")) {
+      
       topTenTimes = JSON.parse(localStorage.getItem("topTenTimes"));
       updateTable();
     }
@@ -194,7 +195,7 @@
 
       // Display the top time above the title
       if (topTenTimes.length > 0) {
-        tableContent += "<tr><td colspan='4'>" + topTenTimes[0].time + "</td></tr>";
+        tableContent += "<tr><td colspan='4'><b>" + "Top 10 Times" + "</b></td></tr>";
       }
 
       // Display the table headers

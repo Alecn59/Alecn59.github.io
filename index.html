@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,9 +99,7 @@
     function reportTopTen() {
       var timeInput = document.getElementById("time-input");
       var nameInput = document.getElementById("name-input");
-      var emailInput = document.getElementById
-
-("email-input");
+      var emailInput = document.getElementById("email-input");
 
       var time = timeInput.value;
       var name = nameInput.value;
@@ -206,9 +203,7 @@
       var filename = "User_data.json";
       var blob = new Blob([data], { type: "application/json" });
 
-      // Create
-
- a temporary link element to trigger the download
+    
       var link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = filename;

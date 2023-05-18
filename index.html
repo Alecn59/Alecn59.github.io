@@ -1,56 +1,166 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Top Times</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding-left: 63px;
+      padding-right: 63px;
     }
+
     h1 {
       text-align: center;
+      color: #333;
+      padding: 0;
     }
-    #best-time {
-      font-size: 24px;
-      font-weight: bold;
+
+    form {
+      margin-bottom: 5px;
     }
-    table {
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
       padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
     }
-    th {
-      background-color: #f2f2f2;
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #5b9dd9;
     }
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background-color: #5b9dd9;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3282b8;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+
     caption {
       font-weight: bold;
       margin-bottom: 10px;
     }
+
+    .reset-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background-color: #e74c3c;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .reset-btn:hover {
+      background-color: #c0392b;
+    }
+
     .confirmation-dialog {
       display: none;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: #fff;
+      width: 300px;
       padding: 20px;
-      border-radius: 5px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      z-index: 9999;
+      text-align: center;
     }
-    input[type="password"] {
+
+    .confirmation-dialog h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .confirmation-dialog input[type="password"] {
+      width: 100%;
       margin-bottom: 10px;
     }
-    .reset-btn {
-      margin-left: 10px;
+
+    @keyframes bounce {
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .bounce-animation {
+      animation: bounce 1s infinite;
+    }
+
+    body {
+      position: relative;
+    }
+
+    .blue-bar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 60px;
+      background-color: #5
+
+b9dd9;
+      z-index: -1;
+    }
+
+    .blue-bar-left {
+      left: 0;
+    }
+
+    .blue-bar-right {
+      right: 0;
     }
   </style>
 </head>
 <body>
-  <h1>Best Time: <span id="best-time"></span></h1>
+  <div class="blue-bar blue-bar-left"></div>
+  <div class="blue-bar blue-bar-right"></div>
+  <h1><u>Best Time: <span id="best-time" class="bounce-animation"></span></u></h1>
   <table id="top-ten-table">
     <caption>Top Ten Times and Names Entered</caption>
     <tr>
@@ -70,7 +180,7 @@
     <button type="button" onclick="hideConfirmationDialog()">Cancel</button>
   </div>
 
-  <br><br>
+  <br> <br>
 
   <form>
     <label for="time-input">Enter a time:</label>
@@ -88,11 +198,13 @@
   </form>
 
   <script>
+    var allTimes = [];
     var topTenTimes = [];
 
     // Load previously saved data from local storage
-    if (localStorage.getItem("topTenTimes")) {
-      topTenTimes = JSON.parse(localStorage.getItem("topTenTimes"));
+    if (localStorage.getItem("allTimes")) {
+      allTimes = JSON.parse(localStorage.getItem("allTimes"));
+      updateTopTenTimes();
       updateTable();
     }
 
@@ -100,115 +212,97 @@
       var timeInput = document.getElementById("time-input");
       var nameInput = document.getElementById("name-input");
       var emailInput = document.getElementById("email-input");
-
       var time = timeInput.value;
       var name = nameInput.value;
       var email = emailInput.value;
 
       if (time && name && email) {
-        var timeData = { time: time, name: name, email: email };
-        topTenTimes.push(timeData);
-        topTenTimes.sort(compareTimes);
-        if (topTenTimes.length > 10) {
-          topTenTimes.pop();
-        }
+        var timeObj = { time: time, name: name, email: email };
+        allTimes.push(timeObj);
+        updateTopTenTimes();
         updateTable();
-        saveToLocalStorage();
+
         timeInput.value = "";
         nameInput.value = "";
         emailInput.value = "";
-      } else {
-        alert("Please fill in all the fields.");
       }
     }
 
-    function compareTimes(a, b) {
-      var timeA = timeToSeconds(a.time);
-      var timeB = timeToSeconds(b.time);
-      return timeA - timeB;
-    }
-
-    function timeToSeconds(time) {
-      var parts = time.split(":");
-      var seconds = 0;
-      if (parts.length === 3) {
-        seconds += parseInt(parts[0]) * 3600;
-        seconds += parseInt(parts[1]) * 60;
-        seconds += parseInt(parts[2]);
-      } else if (parts.length === 2) {
-        seconds += parseInt(parts[0]) * 60;
-        seconds += parseInt(parts[1]);
-      } else if (parts.length === 1) {
-        seconds += parseInt(parts[0]);
-      }
-      return seconds;
+    function updateTopTenTimes() {
+      topTenTimes = allTimes.slice().sort(function(a, b) {
+        return a.time.localeCompare(b.time);
+      }).slice(0, 10);
     }
 
     function updateTable() {
-      var bestTimeElement = document.getElementById("best-time");
       var topTenTable = document.getElementById("top-ten-table");
+      var bestTimeElement = document.getElementById("best-time");
       var tableContent = "";
 
+      // Display the top time above the title
       if (topTenTimes.length > 0) {
-        bestTimeElement.textContent = topTenTimes[0].time;
-        topTenTable.innerHTML = "<tr><td colspan='4'><h3>Top 10 Times</h3></td></tr>";
+        var bestTime = topTenTimes[0].time;
+        bestTimeElement.textContent= bestTime;
       } else {
         bestTimeElement.textContent = "";
-        topTenTable.innerHTML = "";
       }
 
-      // Display the table headers
-      tableContent += "<tr><th>Rank</th><th>Time</th><th>Name</th><th>Email</th></tr>";
-
-      // Display the table rows
+      // Generate the table rows
       for (var i = 0; i < topTenTimes.length; i++) {
-        tableContent += "<tr><td>" + (i + 1) + "</td><td>" + topTenTimes[i].time + "</td><td>" + topTenTimes[i].name + "</td><td>" + topTenTimes[i].email + "</td></tr>";
+        var rank = i + 1;
+        var time = topTenTimes[i].time;
+        var name = topTenTimes[i].name;
+        var email = topTenTimes[i].email;
+
+        tableContent += "<tr>";
+        tableContent += "<td>" + rank + "</td>";
+        tableContent += "<td>" + time + "</td>";
+        tableContent += "<td>" + name + "</td>";
+        tableContent += "<td>" + email + "</td>";
+        tableContent += "</tr>";
       }
 
-      topTenTable.innerHTML += tableContent;
+      topTenTable.innerHTML = tableContent;
     }
 
-    function saveToLocalStorage() {
-      localStorage.setItem("topTenTimes", JSON.stringify(topTenTimes));
+    function exportData() {
+      var dataStr = JSON.stringify(allTimes);
+      var dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+      var exportAnchor = document.createElement("a");
+      exportAnchor.setAttribute("href", dataUri);
+      exportAnchor.setAttribute("download", "top_times.json");
+      exportAnchor.click();
     }
 
     function showConfirmationDialog() {
-      var dialog = document.getElementById("confirmation-dialog");
-      dialog.style.display = "block";
+      var confirmationDialog = document.getElementById("confirmation-dialog");
+      confirmationDialog.style.display = "block";
     }
 
     function hideConfirmationDialog() {
-      var dialog = document.getElementById("confirmation-dialog");
-      dialog.style.display = "none";
+      var confirmationDialog = document.getElementById("confirmation-dialog");
+      confirmationDialog.style.display = "none";
     }
 
     function resetData() {
       var passwordInput = document.getElementById("reset-password-input");
       var password = passwordInput.value;
 
-      // Check if the password matches
-      if (password === "Kioxia123") {
-        topTenTimes = [];
+      if (password === "reset123") {
+        allTimes = [];
+        updateTopTenTimes();
         updateTable();
-        saveToLocalStorage();
-        hideConfirmationDialog();
-        passwordInput.value = "";
-      } else {
-        alert("Incorrect password. Please try again.");
+        localStorage.removeItem("allTimes");
       }
-    }
-    
-    function exportData() {
-      var data = JSON.stringify(topTenTimes);
-      var filename = "User_data.json";
-      var blob = new Blob([data], { type: "application/json" });
 
-    
-      var link = document.createElement("a");
-      link.href = window.URL.createObjectURL(blob);
-      link.download = filename;
-      link.click();
+      passwordInput.value = "";
+      hideConfirmationDialog();
     }
+
+    // Save data to local storage when the page is closed or refreshed
+    window.addEventListener("beforeunload", function() {
+      localStorage.setItem("allTimes", JSON.stringify(allTimes));
+    });
   </script>
 </body>
 </html>

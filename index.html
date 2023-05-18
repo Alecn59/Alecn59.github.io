@@ -140,7 +140,7 @@
       <th>Email</th>
     </tr>
   </table>
-
+  <button type="button" onclick="exportData()">Export Data</button>
   <button type="button" class="reset-btn" onclick="showConfirmationDialog()">Reset</button>
 
   <div id="confirmation-dialog" class="confirmation-dialog">
@@ -260,6 +260,24 @@
       } else {
         alert("Incorrect password. Please try again.");
       }
+    }
+    
+      function exportData() {
+      var data = JSON.stringify(topTenTimes);
+      var filename = "top_times_data.json";
+      var blob = new Blob([data], { type: "application/json" });
+
+      // Create a temporary link element
+      var link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+
+      // Append the link to the DOM and simulate a click
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up the temporary link element
+      document.body.removeChild(link);
     }
   </script>
 </body>

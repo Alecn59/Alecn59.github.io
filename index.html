@@ -3,7 +3,7 @@
 <head>
   <title>Top Times</title>
   <style>
-     body {
+       body {
       font-family: Arial, sans-serif;
       background-color: #f2f2f2;
       margin: 0;
@@ -108,10 +108,28 @@
     .bounce-animation {
       animation: bounce 1s infinite;
     }
+    body {
+      position: relative;
+    }
+    .blue-bar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      background-color: #5b9dd9;
+      z-index: -1;
+    }
+    .blue-bar-left {
+      left: 0;
+    }
+    .blue-bar-right {
+      right: 0;
+    }
   </style>
 </head>
 <body>
-  <!-- ... Existing HTML markup ... -->
+  <div class="blue-bar blue-bar-left"></div>
+  <div class="blue-bar blue-bar-right"></div>
   <h1><u>Best Time: <span id="best-time" class="bounce-animation"></span></u></h1>
    <table id="top-ten-table">
     <caption>Top Ten Times and Names Entered</caption>
@@ -247,3 +265,7 @@
 </body>
 </html>
 
+
+
+
+  

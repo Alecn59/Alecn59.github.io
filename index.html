@@ -156,15 +156,19 @@
     .blue-bar-right {
       right: 0;
     }
+ 
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
-  <div class="blue-bar blue-bar-left"></div>
+   <div class="blue-bar blue-bar-left"></div>
   <div class="blue-bar blue-bar-right"></div>
   <h1 style="margin-top: .0"><u>Best Time: <span id="best-time"></span></u></h1>
   <table id="top-ten-table">
-    <caption>Top Ten Times and Names Entered</caption>
     <tr>
       <th>Rank</th>
       <th>Time</th>
@@ -199,8 +203,20 @@
     <button type="button" class="reset-btn" onclick="showConfirmationDialog()">Reset</button>
   </form>
 
+
+  <table id="top-ten-table">
+    <tr>
+      <th>Rank</th>
+      <th>Time</th>
+      <th>Name</th>
+      <th>Email</th>
+    </tr>
+  </table>
+
+  <!-- ... rest of the code ... -->
+
   <script>
-    var allTimes = [];
+     var allTimes = [];
     var topTenTimes = [];
 
     // Load previously saved data from local storage
@@ -236,21 +252,21 @@
       }).slice(0, 10);
     }
 
+
     function updateTable() {
+      // ... existing code ...
       var topTenTable = document.getElementById("top-ten-table");
       var bestTimeElement = document.getElementById("best-time");
       var tableContent = "";
 
-      // Display the top time above the title
+      // Display the table headers only when there are entries
       if (topTenTimes.length > 0) {
-        var bestTime = topTenTimes[0].time;
-        bestTimeElement.textContent = bestTime;
-        bestTimeElement.classList.add("bounce-animation"); // Add bounce animation class
+        document.getElementById("top-ten-table").classList.remove("hidden");
       } else {
-        bestTimeElement.textContent = "";
+        document.getElementById("top-ten-table").classList.add("hidden");
       }
 
-      // Generate the table rows
+ // Generate the table rows
       for (var i = 0; i < topTenTimes.length; i++) {
         var rank = i + 1;
         var time = topTenTimes[i].time;
@@ -316,6 +332,7 @@
     window.addEventListener("beforeunload", function() {
       localStorage.setItem("allTimes", JSON.stringify(allTimes));
     });
+    }
   </script>
 </body>
 </html>

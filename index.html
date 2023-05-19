@@ -145,7 +145,9 @@
       top: 0;
       bottom: 0;
       width: 60px;
-      background-color: #5b9dd9;
+      background-color
+
+: #5b9dd9;
       z-index: -1;
     }
 
@@ -156,7 +158,6 @@
     .blue-bar-right {
       right: 0;
     }
- 
 
     .hidden {
       display: none;
@@ -165,7 +166,7 @@
 </head>
 
 <body>
-   <div class="blue-bar blue-bar-left"></div>
+  <div class="blue-bar blue-bar-left"></div>
   <div class="blue-bar blue-bar-right"></div>
   <h1 style="margin-top: .0"><u>Best Time: <span id="best-time"></span></u></h1>
   <table id="top-ten-table">
@@ -203,20 +204,8 @@
     <button type="button" class="reset-btn" onclick="showConfirmationDialog()">Reset</button>
   </form>
 
-
-  <table id="top-ten-table">
-    <tr>
-      <th>Rank</th>
-      <th>Time</th>
-      <th>Name</th>
-      <th>Email</th>
-    </tr>
-  </table>
-
-  <!-- ... rest of the code ... -->
-
   <script>
-     var allTimes = [];
+    var allTimes = [];
     var topTenTimes = [];
 
     // Load previously saved data from local storage
@@ -252,55 +241,53 @@
       }).slice(0, 10);
     }
 
-
     function updateTable() {
-      // ... existing code ...
       var topTenTable = document.getElementById("top-ten-table");
       var bestTimeElement = document.getElementById("best-time");
       var tableContent = "";
 
-      // Display the table headers only when there are entries
+      // Display the top time above the title
       if (topTenTimes.length > 0) {
-        document.getElementById("top-ten-table").classList.remove("hidden");
+        var bestTime = topTenTimes[0].time;
+        best
+
+TimeElement.innerText = bestTime;
       } else {
-        document.getElementById("top-ten-table").classList.add("hidden");
+        bestTimeElement.innerText = "";
       }
 
- // Generate the table rows
+      // Generate table rows
       for (var i = 0; i < topTenTimes.length; i++) {
         var rank = i + 1;
         var time = topTenTimes[i].time;
         var name = topTenTimes[i].name;
         var email = topTenTimes[i].email;
-
-        tableContent += "<tr>";
-        tableContent += "<td>" + rank + "</td>";
-        tableContent += "<td>" + time + "</td>";
-        tableContent += "<td>" + name + "</td>";
-        tableContent += "<td>" + email + "</td>";
-        tableContent += "</tr>";
+        tableContent += "<tr><td>" + rank + "</td><td>" + time + "</td><td>" + name + "</td><td>" + email + "</td></tr>";
       }
 
-      topTenTable.innerHTML = tableContent;
+      // Update the table with the new content
+      topTenTable.innerHTML = "<tr><th>Rank</th><th>Time</th><th>Name</th><th>Email</th></tr>" + tableContent;
     }
 
     function exportData() {
-      var data = [];
-      
-      // Add counter and entries to the data array
-      for (var i = 0; i < allTimes.length; i++) {
-        var counter = i + 1;
-        var entry = allTimes[i];
-        entry.counter = counter;
-        data.push(entry);
+      if (allTimes.length > 0) {
+        var csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Rank,Time,Name,Email\n";
+        for (var i = 0; i < allTimes.length; i++) {
+          var rank = i + 1;
+          var time = allTimes[i].time;
+          var name = allTimes[i].name;
+          var email = allTimes[i].email;
+          csvContent += rank + "," + time + "," + name + "," + email + "\n";
+        }
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "top_times.csv");
+        document.body.appendChild(link); // Required for Firefox
+        link.click();
       }
-      
-      var dataStr = JSON.stringify(data);
-      var dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
-      var exportAnchor = document.createElement("a");
-      exportAnchor.setAttribute("href", dataUri);
-      exportAnchor.setAttribute("download", "top_times.json");
-      exportAnchor.click();
     }
 
     function showConfirmationDialog() {
@@ -314,25 +301,33 @@
     }
 
     function resetData() {
-      var passwordInput = document.getElementById("reset-password-input");
-      var password = passwordInput.value;
+      var resetPasswordInput = document.getElementById("reset-password-input");
+      var resetPassword = resetPasswordInput.value;
 
-      if (password === "Kioxia123") {
+      // Check if the reset password is correct
+      if (resetPassword === "12345") {
         allTimes = [];
         updateTopTenTimes();
         updateTable();
-        localStorage.removeItem("allTimes");
+        hideConfirmationDialog();
+      } else {
+        // Shake the confirmation dialog
+        var confirmationDialog = document.getElementById("confirmation-dialog");
+        confirmationDialog.classList.add("bounce-animation");
+
+        // Reset the shake animation after 1 second
+        setTimeout(function() {
+          confirmationDialog.classList.remove("bounce-animation");
+        }, 1000);
       }
 
-      passwordInput.value = "";
-      hideConfirmationDialog();
+      resetPasswordInput.value = "";
     }
 
-    // Save data to local storage when the page is closed or refreshed
-    window.addEventListener("beforeunload", function() {
+    // Save data to local storage before leaving the page
+    window.onbeforeunload = function() {
       localStorage.setItem("allTimes", JSON.stringify(allTimes));
-    });
-    }
+    };
   </script>
 </body>
 </html>

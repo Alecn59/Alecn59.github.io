@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
   <title>Top Times</title>
   <style>
@@ -29,8 +30,9 @@
     input[type="text"],
     input[type="email"],
     input[type="password"] {
-Expand All
-	@@ -36,14 +37,12 @@
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
       border-radius: 4px;
       box-sizing: border-box;
     }
@@ -45,8 +47,8 @@ Expand All
     button {
       padding: 8px 16px;
       border: none;
-Expand All
-	@@ -52,29 +51,23 @@
+      border-radius: 4px;
+      background-color: #5b9dd9;
       color: #fff;
       cursor: pointer;
     }
@@ -76,8 +78,8 @@ Expand All
     .reset-btn {
       padding: 8px 16px;
       border: none;
-Expand All
-	@@ -83,11 +76,9 @@
+      border-radius: 4px;
+      background-color: #e74c3c;
       color: #fff;
       cursor: pointer;
     }
@@ -89,8 +91,14 @@ Expand All
     .confirmation-dialog {
       display: none;
       position: fixed;
-Expand All
-	@@ -102,23 +93,16 @@
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
@@ -114,8 +122,9 @@ Expand All
         transform: translateY(0);
       }
       40% {
-Expand All
-	@@ -128,30 +112,23 @@
+        transform: translateY(-10px);
+      }
+      60% {
         transform: translateY(-5px);
       }
     }
@@ -145,30 +154,26 @@ b9dd9;
     .blue-bar-right {
       right: 0;
     }
-Expand All
-	@@ -161,7 +138,7 @@
+  </style>
+</head>
+<body>
   <div class="blue-bar blue-bar-left"></div>
   <div class="blue-bar blue-bar-right"></div>
   <h1><u>Best Time: <span id="best-time" class="bounce-animation"></span></u></h1>
   <table id="top-ten-table">
     <caption>Top Ten Times and Names Entered</caption>
     <tr>
-      <th>Rank</th>
 Expand All
-	@@ -170,6 +147,7 @@ <h1><u>Best Time: <span id="best-time" class="bounce-animation"></span></u></h1>
-      <th>Email</th>
-    </tr>
-  </table>
+	@@ -70,7 +180,7 @@ <h2>Reset Data</h2>
+    <button type="button" onclick="hideConfirmationDialog()">Cancel</button>
+  </div>
 
-  <div id="confirmation-dialog" class="confirmation-dialog">
-    <h2>Reset Data</h2>
+  <br> <br>
+
+  <form>
+    <label for="time-input">Enter a time:</label>
 Expand All
-	@@ -193,18 +171,16 @@ <h2>Reset Data</h2>
-    <input type="email" id="email-input">
-    <br><br>
-    <button type="button" onclick="reportTopTen()">Submit</button>
-    <button type="button" onclick="exportData()">Export Data</button>
-    <button type="button" class="reset-btn" onclick="showConfirmationDialog()">Reset</button>
+	@@ -88,127 +198,111 @@ <h2>Reset Data</h2>
   </form>
 
   <script>
@@ -182,8 +187,13 @@ Expand All
       updateTable();
     }
 
-Expand All
-	@@ -218,22 +194,24 @@ <h2>Reset Data</h2>
+    function reportTopTen() {
+      var timeInput = document.getElementById("time-input");
+      var nameInput = document.getElementById("name-input");
+      var emailInput = document.getElementById("email-input");
+      var time = timeInput.value;
+      var name = nameInput.value;
+      var email = emailInput.value;
 
       if (time && name && email) {
         var timeObj = { time: time, name: name, email: email };
@@ -206,8 +216,8 @@ Expand All
     function updateTable() {
       var topTenTable = document.getElementById("top-ten-table");
       var bestTimeElement = document.getElementById("best-time");
-Expand All
-	@@ -242,67 +220,73 @@ <h2>Reset Data</h2>
+      var tableContent = "";
+
       // Display the top time above the title
       if (topTenTimes.length > 0) {
         var bestTime = topTenTimes[0].time;

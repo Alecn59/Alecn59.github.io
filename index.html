@@ -158,6 +158,7 @@
     }
   </style>
 </head>
+</head>
 <body>
   <div class="blue-bar blue-bar-left"></div>
   <div class="blue-bar blue-bar-right"></div>
@@ -268,7 +269,17 @@
     }
 
     function exportData() {
-      var dataStr = JSON.stringify(allTimes);
+      var data = [];
+      
+      // Add counter and entries to the data array
+      for (var i = 0; i < allTimes.length; i++) {
+        var counter = i + 1;
+        var entry = allTimes[i];
+        entry.counter = counter;
+        data.push(entry);
+      }
+      
+      var dataStr = JSON.stringify(data);
       var dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
       var exportAnchor = document.createElement("a");
       exportAnchor.setAttribute("href", dataUri);

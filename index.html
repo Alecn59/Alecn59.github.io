@@ -1,210 +1,194 @@
-<!DOCTYPE html>
-<html>
 <head>
   <title>Top Times</title>
   <style>
-       body {
+    body {
       font-family: Arial, sans-serif;
       background-color: #f2f2f2;
       margin: 0;
- 
       padding-left: 63px;
-         padding-right: 63px;
+      padding-right: 63px;
     }
+
     h1 {
       text-align: center;
       color: #333;
       padding: 0;
     }
-    
-    h9 {
-       text-align: center;
-    }
+
     form {
       margin-bottom: 5px;
     }
+
     label {
       display: block;
       margin-bottom: 5px;
       color: #333;
     }
+
     input[type="text"],
     input[type="email"],
     input[type="password"] {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
+Expand All
+	@@ -36,14 +37,12 @@
       border-radius: 4px;
       box-sizing: border-box;
     }
+
     input[type="text"]:focus,
     input[type="email"]:focus,
     input[type="password"]:focus {
       outline: none;
       border-color: #5b9dd9;
     }
+
     button {
       padding: 8px 16px;
       border: none;
-      border-radius: 4px;
-      background-color: #5b9dd9;
+Expand All
+	@@ -52,29 +51,23 @@
       color: #fff;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #3282b8;
     }
+
     table {
       border-collapse: collapse;
       width: 100%;
       margin-bottom: 20px;
     }
-    th, td {
+
+    th,
+    td {
       border: 1px solid #ccc;
       padding: 8px;
       text-align: center;
     }
+
     caption {
       font-weight: bold;
       margin-bottom: 10px;
     }
+
     .reset-btn {
       padding: 8px 16px;
       border: none;
-      border-radius: 4px;
-      background-color: #e74c3c;
+Expand All
+	@@ -83,11 +76,9 @@
       color: #fff;
       cursor: pointer;
     }
+
     .reset-btn:hover {
       background-color: #c0392b;
     }
+
     .confirmation-dialog {
       display: none;
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 300px;
-      padding: 20px;
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+Expand All
+	@@ -102,23 +93,16 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
+
     .confirmation-dialog h2 {
       margin-top: 0;
       color: #333;
     }
+
     .confirmation-dialog input[type="password"] {
       width: 100%;
       margin-bottom: 10px;
     }
+
     @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
         transform: translateY(0);
       }
       40% {
-        transform: translateY(-10px);
-      }
-      60% {
+Expand All
+	@@ -128,30 +112,23 @@
         transform: translateY(-5px);
       }
     }
+
     .bounce-animation {
       animation: bounce 1s infinite;
     }
+
     body {
       position: relative;
     }
+
     .blue-bar {
       position: absolute;
       top: 0;
       bottom: 0;
       width: 60px;
-      background-color: #5b9dd9;
+      background-color: #5
+b9dd9;
       z-index: -1;
     }
+
     .blue-bar-left {
       left: 0;
     }
+
     .blue-bar-right {
       right: 0;
     }
-  </style>
-</head>
-<body>
+Expand All
+	@@ -161,7 +138,7 @@
   <div class="blue-bar blue-bar-left"></div>
   <div class="blue-bar blue-bar-right"></div>
   <h1><u>Best Time: <span id="best-time" class="bounce-animation"></span></u></h1>
-   <table id="top-ten-table">
+  <table id="top-ten-table">
     <caption>Top Ten Times and Names Entered</caption>
     <tr>
       <th>Rank</th>
-      <th>Time</th>
-      <th>Name</th>
+Expand All
+	@@ -170,6 +147,7 @@ <h1><u>Best Time: <span id="best-time" class="bounce-animation"></span></u></h1>
       <th>Email</th>
     </tr>
   </table>
- 
 
   <div id="confirmation-dialog" class="confirmation-dialog">
     <h2>Reset Data</h2>
-    <p>Enter the password to confirm:</p>
-    <input type="password" id="reset-password-input">
-    <br>
-    <button type="button" onclick="resetData()">Confirm</button>
-    <button type="button" onclick="hideConfirmationDialog()">Cancel</button>
-  </div>
-
-  <br> <br>
-
-  <form>
-    <label for="time-input">Enter a time:</label>
-    <input type="text" id="time-input" pattern="^([0-9]+|:[0-9]{2}(:[0-9]{2})?)$">
-
-    <label for="name-input">Enter full name:</label>
-    <input type="text" id="name-input" pattern="[0-9]+">
-    <br>
-    <label for="email-input">Enter an email:</label>
+Expand All
+	@@ -193,18 +171,16 @@ <h2>Reset Data</h2>
     <input type="email" id="email-input">
     <br><br>
     <button type="button" onclick="reportTopTen()">Submit</button>
-     <button type="button" onclick="exportData()">Export Data</button>
-     <button type="button" class="reset-btn" onclick="showConfirmationDialog()">Reset</button>
+    <button type="button" onclick="exportData()">Export Data</button>
+    <button type="button" class="reset-btn" onclick="showConfirmationDialog()">Reset</button>
   </form>
 
   <script>
+    var allTimes = [];
     var topTenTimes = [];
 
     // Load previously saved data from local storage
-    if (localStorage.getItem("topTenTimes")) {
-      topTenTimes = JSON.parse(localStorage.getItem("topTenTimes"));
+    if (localStorage.getItem("allTimes")) {
+      allTimes = JSON.parse(localStorage.getItem("allTimes"));
+      updateTopTenTimes();
       updateTable();
     }
 
-    function reportTopTen() {
-      var timeInput = document.getElementById("time-input");
-      var nameInput = document.getElementById("name-input");
-      var emailInput = document.getElementById("email-input");
-      var time = timeInput.value;
-      var name = nameInput.value;
-      var email = emailInput.value;
+Expand All
+	@@ -218,22 +194,24 @@ <h2>Reset Data</h2>
 
       if (time && name && email) {
         var timeObj = { time: time, name: name, email: email };
-        topTenTimes.push(timeObj);
-        topTenTimes.sort(function(a, b) {
-          return a.time.localeCompare(b.time);
-        });
-
-        if (topTenTimes.length > 10) {
-          topTenTimes.splice(10, 1);
-        }
-
+        allTimes.push(timeObj);
+        updateTopTenTimes();
         updateTable();
-        saveToLocalStorage();
 
         timeInput.value = "";
         nameInput.value = "";
@@ -212,25 +196,27 @@
       }
     }
 
+    function updateTopTenTimes() {
+      topTenTimes = allTimes.slice().sort(function(a, b) {
+        return a.time.localeCompare(b.time);
+      }).slice(0, 10);
+    }
+
     function updateTable() {
       var topTenTable = document.getElementById("top-ten-table");
       var bestTimeElement = document.getElementById("best-time");
-      var tableContent = "";
-
+Expand All
+	@@ -242,67 +220,73 @@ <h2>Reset Data</h2>
       // Display the top time above the title
       if (topTenTimes.length > 0) {
         var bestTime = topTenTimes[0].time;
-        bestTimeElement.textContent = bestTime;
-        tableContent += "<tr><td colspan='4'><b><h3>Top 10 Times</h3></b></td></tr>";
+        bestTimeElement.textContent= bestTime;
       } else {
         bestTimeElement.textContent = "";
       }
 
-      // Display the table headers
-    
-
-      // Display the table rows
- for (var i = 0; i < topTenTimes.length; i++) {
+      // Generate the table rows
+      for (var i = 0; i < topTenTimes.length; i++) {
         var rank = i + 1;
         var time = topTenTimes[i].time;
         var name = topTenTimes[i].name;
@@ -239,6 +225,10 @@
         tableContent += "<tr>";
         tableContent += "<td>" + rank + "</td>";
         tableContent += "<td>" + time + "</td>";
+        tableContent += "<td>" + name + "</td>";
+        tableContent += "<td>" + email + "</td>";
+        tableContent += "</tr>";
+      }
 
       topTenTable.innerHTML = tableContent;
     }
@@ -251,11 +241,13 @@
       exportAnchor.setAttribute("download", "top_times.json");
       exportAnchor.click();
     }
- function showConfirmationDialog() {
+
+    function showConfirmationDialog() {
       var confirmationDialog = document.getElementById("confirmation-dialog");
       confirmationDialog.style.display = "block";
+    }
 
-deConfirmationDialog() {
+    function hideConfirmationDialog() {
       var confirmationDialog = document.getElementById("confirmation-dialog");
       confirmationDialog.style.display = "none";
     }
@@ -264,14 +256,12 @@ deConfirmationDialog() {
       var passwordInput = document.getElementById("reset-password-input");
       var password = passwordInput.value;
 
-      // Check if the password matches
-     if (password === "reset123") {
+      if (password === "reset123") {
         allTimes = [];
         updateTopTenTimes();
         updateTable();
-      
         localStorage.removeItem("allTimes");
-        }
+      }
 
       passwordInput.value = "";
       hideConfirmationDialog();
@@ -281,25 +271,6 @@ deConfirmationDialog() {
     window.addEventListener("beforeunload", function() {
       localStorage.setItem("allTimes", JSON.stringify(allTimes));
     });
-    }
-    
-      function exportData() {
-      var data = JSON.stringify(topTenTimes);
-      var filename = "User_data.json";
-      var blob = new Blob([data], { type: "application/json" });
-
-      // Create a temporary link element
-      var link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-
-      // Append the link to the DOM and simulate a click
-      document.body.appendChild(link);
-      link.click();
-
-      // Clean up the temporary link element
-      document.body.removeChild(link);
-    }
   </script>
 </body>
 </html>

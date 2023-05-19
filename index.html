@@ -227,31 +227,37 @@
       }
 
       // Display the table headers
-      tableContent += "<tr><th>Rank</th><th>Time</th><th>Name</th><th>Email</th></tr>";
+    
 
       // Display the table rows
-      for (var i = 0; i < topTenTimes.length; i++) {
-        tableContent += "<tr><td>" + (i + 1) + "</td><td>" + topTenTimes[i].time + "</td><td>" + topTenTimes[i].name + "</td><td>" + topTenTimes[i].email + "</td></tr>";
-      }
+ for (var i = 0; i < topTenTimes.length; i++) {
+        var rank = i + 1;
+        var time = topTenTimes[i].time;
+        var name = topTenTimes[i].name;
+        var email = topTenTimes[i].email;
+
+        tableContent += "<tr>";
+        tableContent += "<td>" + rank + "</td>";
+        tableContent += "<td>" + time + "</td>";
 
       topTenTable.innerHTML = tableContent;
     }
 
-    function saveToLocalStorage() {
-      localStorage.setItem("topTenTimes", JSON.stringify(topTenTimes));
+    function exportData() {
+      var dataStr = JSON.stringify(allTimes);
+      var dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+      var exportAnchor = document.createElement("a");
+      exportAnchor.setAttribute("href", dataUri);
+      exportAnchor.setAttribute("download", "top_times.json");
+      exportAnchor.click();
     }
+ function showConfirmationDialog() {
+      var confirmationDialog = document.getElementById("confirmation-dialog");
+      confirmationDialog.style.display = "block";
 
-    function showConfirmationDialog() {
-      var dialog = document.getElementById("confirmation-dialog");
-      dialog.style.display = "block";
-
-
-
-    }
-
-    function hideConfirmationDialog() {
-      var dialog = document.getElementById("confirmation-dialog");
-      dialog.style.display = "none";
+deConfirmationDialog() {
+      var confirmationDialog = document.getElementById("confirmation-dialog");
+      confirmationDialog.style.display = "none";
     }
 
     function resetData() {
@@ -259,15 +265,22 @@
       var password = passwordInput.value;
 
       // Check if the password matches
-      if (password === "Kioxia123") {
-        topTenTimes = [];
+     if (password === "reset123") {
+        allTimes = [];
+        updateTopTenTimes();
         updateTable();
-        saveToLocalStorage();
-        hideConfirmationDialog();
-        passwordInput.value = "";
-      } else {
-        alert("Incorrect password. Please try again.");
-      }
+      
+        localStorage.removeItem("allTimes");
+        }
+
+      passwordInput.value = "";
+      hideConfirmationDialog();
+    }
+
+    // Save data to local storage when the page is closed or refreshed
+    window.addEventListener("beforeunload", function() {
+      localStorage.setItem("allTimes", JSON.stringify(allTimes));
+    });
     }
     
       function exportData() {
